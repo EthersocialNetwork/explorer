@@ -85,12 +85,7 @@ exports.data = function(req, res){
         ttx.gasPrice = etherUnits.toEther( new BigNumber(tx.gasPrice), "wei");
         //get TxReceipt status & gasUsed
         var receipt = web3.eth.getTransactionReceipt(txHash);
-        if (receipt.status != "0x0"){
-          ttx.status = "Success";
-        }
-        else{
-          ttx.status = "Failure";
-        }
+        ttx.status = receipt.status;
         ttx.gasUsed = receipt.gasUsed;
         //get timestamp from block
         var block = web3.eth.getBlock(tx.blockNumber, function(err, block) {

@@ -6,12 +6,15 @@
         <table class="col-md-6 table table-hover">
           
           <tr ><td width="25%">TxHash</td><td>{{tx.hash}}</td></tr>
-          <tr ><td width="25%">TxReceipt Status</td><td>{{tx.status}}</td></tr>
+          <tr ><td width="25%">TxReceipt Status</td><td>
+            <div class="tx-sucess" ng-if="tx.status == 1">Success</div>
+            <div class="tx-failed" ng-if="tx.status == 0">Failed</div>
+          </td></tr>
           <tr ><td width="25%">Block Height</td>
                 <td><a href="/block/{{tx.blockNumber}}">{{tx.blockNumber | number}}</a></td>
           </tr>
           <tr ><td width="25%">TimeStamp</td>
-                <td>{{tx.datetime | date:'yyyy-MM-dd HH:mm:ss Z' }} ({{tx.timestamp | timeDuration}} ago)</td>
+                <td>{{tx.timestamp | timeDuration}} ago ({{tx.datetime | date:'yyyy-MM-dd HH:mm:ss Z' }})</td>
           </tr>
           <tr ><td width="25%">From</td>
                 <td><a href="/addr/{{tx.from}}">{{tx.from}}</a></td></tr>
