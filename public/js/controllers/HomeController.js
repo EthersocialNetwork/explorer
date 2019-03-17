@@ -36,7 +36,7 @@ angular.module('BlocksApp').controller('HomeController', function($rootScope, $s
     $scope.blockLoading = false;
     $scope.settings = $rootScope.setup;
 })
-.directive('simpleSummaryStats', function($http) {
+.directive('simpleSummaryStats', function($http, $timeout) {
   return {
     restrict: 'E',
     templateUrl: '/views/simple-summary-stats.html',
@@ -44,15 +44,26 @@ angular.module('BlocksApp').controller('HomeController', function($rootScope, $s
     link: function(scope, elem, attrs){
       scope.stats = {};
       var statsURL = "/web3relay";
-      $http.post(statsURL, {"action": "hashrate"})
-       .then(function(res){
-          scope.stats.hashrate = res.data.hashrate;
-          scope.stats.difficulty = res.data.difficulty;
-          scope.stats.blockHeight = res.data.blockHeight;
-          scope.stats.blockTime = res.data.blockTime;
-          //console.log(res);
-	});
-      }
+      var timeout;
+      var refreshStats = function() {
+        $http.post(statsURL, {"action": "hashrate"})
+          .then(function(res){
+            scope.stats.hashrate = res.data.hashrate;
+            scope.stats.difficulty = res.data.difficulty;
+            scope.stats.blockHeight = res.data.blockHeight;
+            scope.stats.blockTime = res.data.blockTime;
+        });
+
+        if (timeout) {
+          $timeout.cancel(timeout);
+        }
+
+        timeout = $timeout(function() {
+          refreshStats();
+        }, scope.settings.refreshNetstatsTime*1000 || 10000);
+      };
+      refreshStats();
+    }
   }
 })
 .directive('siteNotes', function() {
