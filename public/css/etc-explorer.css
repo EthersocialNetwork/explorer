@@ -146,5 +146,15 @@ li.ng-scope {
 }
 .page-spinner-bar{margin-top:-84px;margin-left:-98px;top:50%;left:50%;}
 .mini-logo {
-  height: 1.2em;
+    color: green;
+}
+
+.mini-logo:before {
+    content: " ";
+    background: url(/img/etc-mini-logo.svg);
+    background-size: 10px 20px;
+    width: 10px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
 }
